@@ -1,0 +1,15 @@
+{
+    "welcome": "Welcome to Restify",
+    "home": {
+        "title": "Home"
+    },
+    "profile": {
+        "title": "Profile"
+    },
+    "sleep_management": {
+        "title": "Sleep Management"
+    },
+    "config": {
+        "title": "Configuration"
+    }
+}

@@ -1,37 +1,56 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
+import { 
+    MD3LightTheme as DefaultTheme, 
+    PaperProvider 
+} from 'react-native-paper';
 import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { useFonts } from 'expo-font';
+
+import * as SplashScreen from 'expo-splash-screen';
+
+import { useThemeMode } from '@/hooks/useThemeMode';
+import { darkTheme, lightTheme } from '@/constants/styles/colors';
+import i18n from '@/i18n';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+    const { isDarkTheme } = useThemeMode();
+    const currentTheme = isDarkTheme ? darkTheme : lightTheme;
+    const combinedTheme = { 
+        ...DefaultTheme, 
+        colors: { 
+            ...DefaultTheme.colors, 
+            ...currentTheme 
+        } 
+    };
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    const [loaded] = useFonts({
+        SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    });
+
+    useEffect(() => {
+        if (loaded) {
+            SplashScreen.hideAsync();
+        }
+    }, [loaded]);
+
+    if (!loaded) {
+        return null;
     }
-  }, [loaded]);
 
-  if (!loaded) {
-    return null;
-  }
-
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
-  );
+    return (
+        <PaperProvider theme={combinedTheme}>
+            <Stack>
+                <Stack.Screen
+                    name="(tabs)"
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+            </Stack>
+        </PaperProvider>
+    );
 }

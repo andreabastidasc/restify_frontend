@@ -1,9 +1,9 @@
 import { View, Text } from "react-native"
 
-export default function Home() {
+export default function Profile() {
     return (
         <View>
-            <Text>HOME</Text>
+            <Text>Profile</Text>
         </View>
     )
 }

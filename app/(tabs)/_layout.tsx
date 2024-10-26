@@ -1,37 +1,40 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
+import { Icon } from 'react-native-paper';
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import Home from '.';
+import Profile from './profile';
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+const Tab = createMaterialBottomTabNavigator();
 
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
-  );
+export default function BottomTabs() {
+    return (
+        <Tab.Navigator
+            labeled={false}
+        >
+            <Tab.Screen 
+                name="home" 
+                component={Home}
+                options={{
+                    tabBarIcon: () => (
+                        <Icon 
+                            source="moon-waning-crescent"
+                            size={24}
+                        /> 
+                    ),
+                }}
+            />
+            <Tab.Screen 
+                name="profile" 
+                component={Profile}
+                options={{
+                    tabBarIcon: () => (
+                        <Icon 
+                            source="account"
+                            size={24}
+                        /> 
+                    ),
+                }}
+            />
+        </Tab.Navigator>
+    );
 }
